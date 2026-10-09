@@ -164,5 +164,8 @@ switch, for a multi-node cluster).
 ## System requirements
 
 CPU: 2 cores
-RAM: 6 GB (NetApp's OVA default; override with `QEMU_MEMORY`)
+RAM: 6 GB (NetApp's OVA default; override with `QEMU_MEMORY`). Under a real
+workload (several NFS volumes plus iSCSI LUNs served to a Kubernetes cluster,
+a SnapMirror baseline) a 6 GB node logs `wafl.memory.statusVeryLowMemory` and
+can stop answering after an hour; `QEMU_MEMORY=8192` fixed that in testing.
 DISK: 1.5 GB for the image; the simulated disk shelf is a sparse 230 GB disk
