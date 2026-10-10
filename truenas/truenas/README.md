@@ -110,5 +110,10 @@ On SIGTERM (`docker stop`, `containerlab destroy`) the launcher sends the guest 
 
 * TrueNAS 25.04+ removed the REST API (`/api/v2.0`); tooling must use the websocket JSON-RPC API.
 * TrueNAS rejects two interfaces in the same IPv4 subnet.
+* The management NIC (`ens1`) uses QEMU user networking, which keeps a remote client's real source address on the forwarded ports (only
+  loopback clients appear as 10.0.0.2). If you move TrueNAS's default route to a data interface, add a static route for the containerlab
+  management network via 10.0.0.2 first (`staticroute.create {"destination": "172.20.20.0/24", "gateway": "10.0.0.2"}`), or the web UI,
+  SSH and the launcher's API session on the management address stop answering. Make `ens1` static (10.0.0.15/24, no gateway) so only
+  one default route remains.
 * Community Edition features that need a license (HA, NVMe-oF ANA/SPDK/RDMA, S3 versioning and audit, ...) are not
   available.
